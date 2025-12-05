@@ -1,8 +1,7 @@
 package com.theriot.oaelevator;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class App {
 
@@ -13,15 +12,14 @@ public class App {
 
     public static void main(String[] args) {
         try {
-            int[] arguments = parseArguments(args);
-            OAElevator elevator = new OAElevator(arguments[0], Arrays.copyOfRange(arguments, 1, arguments.length));
+            OAElevator elevator = new OAElevator(parseArguments(args));
             System.out.println(elevator.evaluateResults());
         } catch (Throwable t) {
             System.out.println(USAGE);
         }
     }
 
-    static int[] parseArguments(String[] args) {
+    static List<Integer> parseArguments(String[] args) {
         Map<String, String> pairs = collectArguments(args);
         String startExpr = pairs.get(START);
         String floorExpr = pairs.get(FLOOR);
@@ -29,11 +27,9 @@ public class App {
             throw new RuntimeException();
         }
 
-        int start = Integer.parseInt(startExpr);
-        int[] floors = parseIntList(floorExpr);
-        int[] parsedArguments = new int[floors.length + 1];
-        parsedArguments[0] = start;
-        System.arraycopy(floors, 0, parsedArguments, 1, floors.length);
+        List<Integer> parsedArguments = new ArrayList<Integer>();
+        parsedArguments.add(Integer.valueOf(startExpr));
+        parsedArguments.addAll(parseIntList(floorExpr));
 
         return parsedArguments;
     }
@@ -52,7 +48,7 @@ public class App {
         return arguments;
     }
 
-    static int[] parseIntList(String expr) {
-        return Arrays.stream(expr.split(",")).mapToInt(Integer::parseInt).toArray();
+    static List<Integer> parseIntList(String expr) {
+        return Arrays.stream(expr.split(",")).map(Integer::valueOf).collect(Collectors.toList());
     }
 }
