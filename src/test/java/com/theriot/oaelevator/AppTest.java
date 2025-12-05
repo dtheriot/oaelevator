@@ -3,6 +3,7 @@ package com.theriot.oaelevator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,8 +21,8 @@ public class AppTest {
 
     @Test
     void testParseArguments2() {
-        int[] values = App.parseArguments(new String[]{"start=1", "floor=2,3,4,5"});
-        assertTrue(Arrays.equals(values, new int[]{1, 2, 3, 4, 5}));
+        List<Integer> values = App.parseArguments(new String[]{"start=1", "floor=2,3,4,5"});
+        assertEquals(values, Arrays.asList(1, 2, 3, 4, 5));
     }
 
     @Test
@@ -40,7 +41,7 @@ public class AppTest {
 
     @Test
     void testParseIntList() {
-        assertEquals(3, App.parseIntList("1,2,3").length);
+        assertEquals(3, App.parseIntList("1,2,3").size());
     }
 
     @Test
