@@ -11,9 +11,9 @@ public class OAElevatorTest {
 
     @Test
     void testEvaluateResults() {
-        OAElevator elevator = new OAElevator(1, new int[]{2, 3, 4});
+        OAElevator elevator = new OAElevator(Arrays.asList(1, 2, 3, 4));
         assertEquals(elevator.evaluateResults(), "30 1,2,3,4");
-        OAElevator elevator2 = new OAElevator(12, new int[]{2, 9, 1, 32});
+        OAElevator elevator2 = new OAElevator(Arrays.asList(12, 2, 9, 1, 32));
         assertEquals(elevator2.evaluateResults(), "560 12,2,9,1,32");
     }
 
