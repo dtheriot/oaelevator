@@ -1,34 +1,23 @@
 package com.theriot.oaelevator;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class OAElevator {
 
     private static final int SINGLE_FLOOR_TRAVEL_TIME = 10;
 
-    private int start;
-    private int[] floors;
+    private List<Integer> floors;
 
-    public OAElevator(int start, int[] floors) {
-        this.start = start;
+    public OAElevator(List<Integer> floors) {
         this.floors = floors;
     }
 
     public String evaluateResults() {
-        // combine floors
-        int[] allFloors = new int[floors.length + 1];
-        allFloors[0] = start;
-        System.arraycopy(floors, 0, allFloors, 1, floors.length);
-
-        // must convert int[] to Integer[] because pure Stream objects work differently than IntStream objects
-        Integer[] allFloorsIntegers = Arrays.stream( allFloors ).boxed().toArray( Integer[]::new );
-
-        int totalFloorsTraveled = Stream.of(allFloorsIntegers).collect(FloorsTraveledCollector.collector());
+        int totalFloorsTraveled = floors.stream().collect(FloorsTraveledCollector.collector());
         int totalTime = SINGLE_FLOOR_TRAVEL_TIME * totalFloorsTraveled;
-        String floorList = Arrays.stream(allFloors).mapToObj(String::valueOf).collect(Collectors.joining(","));
+        String floorList = floors.stream().map(String::valueOf).collect(Collectors.joining(","));
 
         return String.format("%d %s", totalTime, floorList);
     }
@@ -58,13 +47,5 @@ public class OAElevator {
         public static Collector<Integer, ?, Integer> collector() {
             return Collector.of(FloorsTraveledCollector::new, FloorsTraveledCollector::accept, FloorsTraveledCollector::combine, FloorsTraveledCollector::finish);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "OAElevator{" +
-                "start=" + start +
-                ", floors=" + Arrays.toString(floors) +
-                '}';
     }
 }
